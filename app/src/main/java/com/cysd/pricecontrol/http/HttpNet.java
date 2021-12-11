@@ -8,10 +8,31 @@ import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.Request;
 
 public class HttpNet {
+    //上传图片
+    public static void uploadImg(Context context, List<String> list, final NetListener netListener) {
+        String url = Urls.upload;
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("file", list);
+        OkHttp3Utils.postJsonRequest(url, params, new OkHttp3Utils.DataCallBack() {
+            @Override
+            public void requestSuccess(String result) throws Exception {
+                SuccessRequest(context, result, url, netListener);
+            }
+
+            @Override
+            public void requestFailure(Request request, IOException e) {
+                FailureRequest(context, request);
+            }
+        });
+
+    }
+
+    //登陆
     public static void Login(Context context, String account, String password, final NetListener netListener) {
         String url = Urls.login;
         HashMap<String, Object> params = new HashMap<>();

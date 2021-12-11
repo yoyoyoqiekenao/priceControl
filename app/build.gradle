@@ -47,7 +47,7 @@ dependencies {
     implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
     implementation 'com.github.razerdp:BasePopup:2.2.3'
 
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     //日志的拦截器
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     //网络框架
@@ -60,5 +60,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.5.0'
     //时间选择器
     compile 'com.contrarywind:Android-PickerView:4.1.9'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.6'
+
+    implementation 'com.github.getActivity:XXPermissions:13.2'
 
 }

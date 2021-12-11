@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -37,6 +38,7 @@ public class SelectTimePop extends BasePopupWindow implements View.OnClickListen
     private TextView tv_start_year, tv_start_month, tv_start_day;
     private TextView tv_end_year, tv_end_month, tv_end_day;
     private TextView tvSave;
+    private ImageView iv_close;
 
     private String mStart_year, mStart_month, mStart_day;
     private String mEnd_year, mEnd_month, mEnd_day;
@@ -74,6 +76,7 @@ public class SelectTimePop extends BasePopupWindow implements View.OnClickListen
     public View onCreateContentView() {
         View view = createPopupById(R.layout.pop_select_time);
         tvSave = view.findViewById(R.id.tvSave);
+        iv_close = view.findViewById(R.id.iv_close);
 
         ll_start = view.findViewById(R.id.ll_start);
         tv_start_year = view.findViewById(R.id.tv_start_year);
@@ -88,6 +91,7 @@ public class SelectTimePop extends BasePopupWindow implements View.OnClickListen
         ll_start.setOnClickListener(this);
         ll_end.setOnClickListener(this);
         tvSave.setOnClickListener(this);
+        iv_close.setOnClickListener(this);
 
         return view;
     }
@@ -95,6 +99,9 @@ public class SelectTimePop extends BasePopupWindow implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_close:
+                dismiss();
+                break;
             case R.id.tvSave:
                 if (!TextUtils.isEmpty(mStart_year) && !TextUtils.isEmpty(mStart_month) && !TextUtils.isEmpty(mStart_day)
                         && !TextUtils.isEmpty(mEnd_year) && !TextUtils.isEmpty(mEnd_month) && !TextUtils.isEmpty(mEnd_day)) {

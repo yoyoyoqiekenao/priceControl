@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp"
-            android:text="选择交接方式"
+            android:text="选择时间"
             android:textColor="#0C1523"
             android:textSize="14sp"></TextView>
 

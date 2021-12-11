@@ -70,24 +70,15 @@ public class SharedPreferenceUtils {
      *
      * @param context
      */
-   /* public static void setLoginSp(Context context, LoginInfo_alyBean loginBean) {
+    public static void setLoginSp(Context context, String token) {
         SharedPreferences.Editor editor = context.getSharedPreferences("myLoginPreferences", context.MODE_PRIVATE).edit();
-        editor.putString("setInfo", loginBean.getData().getSetInfo());
-        editor.putString("authKey", loginBean.getData().getAuthKey());
-        editor.putString("sessionId", loginBean.getData().getSessionId());
-        if (loginBean.getData().getUserInfo() != null) {
-            editor.putInt("id", loginBean.getData().getUserInfo().getId());
-            editor.putString("username", loginBean.getData().getUserInfo().getUsername());
-        }
-        editor.putString("jpushAndroid", loginBean.getData().getJpushAlia().getAndroid());
-
-        System.out.println("缓存jpush信息1=======" + loginBean.getData().getJpushAlia().getAndroid());
-
+        editor.putString("token", token);
         editor.commit();
     }
-*/
+
     /**
      * 对单个setInfo修改
+     *
      * @param context
      * @param setInfoStr
      */
@@ -103,34 +94,10 @@ public class SharedPreferenceUtils {
      * @param context
      * @return
      */
-    public static LoginInfo_alyBean getLoginSp(Context context) {
-        SharedPreferences myLoginPreferences = context.getSharedPreferences("myLoginPreferences", Context.MODE_PRIVATE);
-        //读取这里主要用到了get[type]("key",defaultvalue),第一个参数是要获取的key，第二个参数是默认值，是当没有为这个key保存值的时候使用。
-        String setInfo = myLoginPreferences.getString("setInfo", "");
-        String authKey = myLoginPreferences.getString("authKey", "");
-        String sessionId = myLoginPreferences.getString("sessionId", "");
-        int id = myLoginPreferences.getInt("id", -1);
-        String username = myLoginPreferences.getString("username", "");
-        String jpushAndroid = myLoginPreferences.getString("jpushAndroid", "");
-
-        System.out.println("缓存jpush信息2=======" + jpushAndroid);
-
-        LoginInfo_alyBean loginInfoBean = new LoginInfo_alyBean();
-        LoginInfo_alyBean.DataBean dataBean = new LoginInfo_alyBean.DataBean();
-        dataBean.setSetInfo(setInfo);
-        dataBean.setAuthKey(authKey);
-        dataBean.setSessionId(sessionId);
-        LoginInfo_alyBean.DataBean.UserInfoBean userInfoBean = new LoginInfo_alyBean.DataBean.UserInfoBean();
-        userInfoBean.setId(id);
-        userInfoBean.setUsername(username);
-        dataBean.setUserInfo(userInfoBean);
-
-        LoginInfo_alyBean.DataBean.jpushAliaBean jpushAliaBean = new LoginInfo_alyBean.DataBean.jpushAliaBean();
-        jpushAliaBean.setAndroid(jpushAndroid);
-        dataBean.setJpushAlia(jpushAliaBean);
-
-        loginInfoBean.setData(dataBean);
-        return loginInfoBean;
+    public static String getLoginSp(Context context) {
+        SharedPreferences sp = context.getSharedPreferences("myLoginPreferences", context.MODE_PRIVATE);
+        String token = sp.getString("token", "");
+        return token;
     }
 
     /**
@@ -169,54 +136,7 @@ public class SharedPreferenceUtils {
     }
 
 
-///////////////////////////缓存网易云信token start ////////////////////////////////
 
-    /**
-     * 缓存网易云信登录状态信息
-     *
-     * @param context
-     */
-    public static void set_wyyx_LoginSp(Context context, String accid, String token) {
-        SharedPreferences.Editor editor = context.getSharedPreferences("myWYYXLoginPreferences", context.MODE_PRIVATE).edit();
-        //if (loginBean != null && loginBean.getData() != null && loginBean.getData().getUserInfo() !=null && loginBean.getData().getUserInfo().getNim()!=null) {
-        //editor.putString("accid", loginBean.getData().getUserInfo().getNim().getAccid());
-        // editor.putString("token", loginBean.getData().getUserInfo().getNim().getToken());
-        editor.putString("accid", accid);
-        editor.putString("token", token);
-        editor.commit();
-        //}
-    }
-
-    /**
-     * 获取网易云信登录信息（accid）
-     *
-     * @param context
-     * @return
-     */
-    public static String get_wyyx_Login_accid_Sp(Context context) {
-        SharedPreferences myLoginPreferences = context.getSharedPreferences("myWYYXLoginPreferences", Context.MODE_PRIVATE);
-        //读取这里主要用到了get[type]("key",defaultvalue),第一个参数是要获取的key，第二个参数是默认值，是当没有为这个key保存值的时候使用。
-        String accid = myLoginPreferences.getString("accid", "");
-        String token = myLoginPreferences.getString("token", "");
-        return accid;
-    }
-
-    /**
-     * 获取网易云信登录信息（token）
-     *
-     * @param context
-     * @return
-     */
-    public static String get_wyyx_Login_token_Sp(Context context) {
-        SharedPreferences myLoginPreferences = context.getSharedPreferences("myWYYXLoginPreferences", Context.MODE_PRIVATE);
-        //读取这里主要用到了get[type]("key",defaultvalue),第一个参数是要获取的key，第二个参数是默认值，是当没有为这个key保存值的时候使用。
-        String accid = myLoginPreferences.getString("accid", "");
-        String token = myLoginPreferences.getString("token", "");
-        return token;
-    }
-
-
-    ///////////////////////缓存网易云信token end //////////////////////////////////
 
 
     ////////////////搜索记录历史数据 start ///////////////////////////---new搞定清单记录数据

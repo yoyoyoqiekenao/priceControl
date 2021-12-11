@@ -8,9 +8,12 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 
+import com.cysd.pricecontrol.bean.LoginBean;
 import com.cysd.pricecontrol.databinding.ActivityLoginBinding;
 import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
+import com.cysd.pricecontrol.util.SharedPreferenceUtils;
+import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 
 public class LoginActivity extends Activity {
@@ -38,7 +41,10 @@ public class LoginActivity extends Activity {
                     @Override
                     public void getRetCodeString(String retCode, String result) {
                         if ("200".equals(retCode)) {
+                            LoginBean bean = new Gson().fromJson(result, LoginBean.class);
+                            SharedPreferenceUtils.setLoginSp(LoginActivity.this, bean.getData().getToken());
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
                         }
                     }
                 });
