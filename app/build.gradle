@@ -45,5 +45,11 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
     implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
+    implementation 'com.github.razerdp:BasePopup:2.2.3'
 
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7'
+    //日志的拦截器
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    //网络框架
+    implementation 'com.squareup.okhttp3:okhttp:3.14.1'
 }

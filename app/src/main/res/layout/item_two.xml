@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_ffffff_20"
+    android:orientation="vertical"
+    android:paddingBottom="13dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="案件编号123456"
+        android:textColor="#B9C0CA"
+        android:textSize="12sp"></TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="11dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="65dp"
+            android:layout_height="65dp"></ImageView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="这里是案件名称"
+                android:textColor="#0C1523"
+                android:textSize="18sp"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:background="@drawable/bg_f5f7f9_10"
+                android:paddingLeft="16dp"
+                android:paddingTop="2dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="2dp"
+                android:text="交接人:无敌"
+                android:textColor="#B9C0CA"
+                android:textSize="12sp"></TextView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="入库时间"
+            android:textColor="#B9C0CA"
+            android:textSize="12sp"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="2021.3.20  9:24:24"
+            android:textColor="#6956EA"
+            android:textSize="12sp"></TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="托管时间"
+            android:textColor="#B9C0CA"
+            android:textSize="12sp"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="2021.3.20  9:24:24"
+            android:textColor="#6956EA"
+            android:textSize="12sp"></TextView>
+    </LinearLayout>
+
+</LinearLayout>

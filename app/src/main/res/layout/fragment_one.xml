@@ -5,6 +5,7 @@
     android:background="#F5F7F9"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
+
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
@@ -48,6 +49,7 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
+                    android:id="@+id/rl_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -60,13 +62,16 @@
                         android:textSize="14sp"></TextView>
 
                     <TextView
+                        android:id="@+id/tv_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
+                        android:gravity="right"
                         android:hint="请输入案件名称"
                         android:textColor="#0F243F"
+                        android:textColorHint="#B9C0CA"
                         android:textSize="14sp"></TextView>
                 </RelativeLayout>
 
@@ -78,6 +83,7 @@
                     android:background="#F5F7F9"></View>
 
                 <RelativeLayout
+                    android:id="@+id/rl_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -90,13 +96,16 @@
                         android:textSize="14sp"></TextView>
 
                     <TextView
+                        android:id="@+id/tv_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
+                        android:gravity="right"
                         android:hint="请输入案件编号"
                         android:textColor="#0F243F"
+                        android:textColorHint="#B9C0CA"
                         android:textSize="14sp"></TextView>
                 </RelativeLayout>
 
@@ -108,6 +117,7 @@
                     android:background="#F5F7F9"></View>
 
                 <RelativeLayout
+                    android:id="@+id/rl_unit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -120,13 +130,16 @@
                         android:textSize="14sp"></TextView>
 
                     <TextView
+                        android:id="@+id/tv_Unit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
+                        android:gravity="right"
                         android:hint="请输入承办单位"
                         android:textColor="#0F243F"
+                        android:textColorHint="#B9C0CA"
                         android:textSize="14sp"></TextView>
                 </RelativeLayout>
 
@@ -138,6 +151,7 @@
                     android:background="#F5F7F9"></View>
 
                 <RelativeLayout
+                    android:id="@+id/rl_person"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -150,13 +164,16 @@
                         android:textSize="14sp"></TextView>
 
                     <TextView
+                        android:id="@+id/tv_person"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
+                        android:gravity="right"
                         android:hint="请输入交接人"
                         android:textColor="#0F243F"
+                        android:textColorHint="#B9C0CA"
                         android:textSize="14sp"></TextView>
                 </RelativeLayout>
 
@@ -168,6 +185,7 @@
                     android:background="#F5F7F9"></View>
 
                 <RelativeLayout
+                    android:id="@+id/rl_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -180,13 +198,16 @@
                         android:textSize="14sp"></TextView>
 
                     <TextView
+                        android:id="@+id/tv_mobile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
+                        android:gravity="right"
                         android:hint="请输入交接人联系方式"
                         android:textColor="#0F243F"
+                        android:textColorHint="#B9C0CA"
                         android:textSize="14sp"></TextView>
                 </RelativeLayout>
 
@@ -217,6 +238,7 @@
                         android:layout_marginRight="20dp"
                         android:hint="请选择交接形式"
                         android:textColor="#0F243F"
+                        android:textColorHint="#B9C0CA"
                         android:textSize="14sp"></TextView>
                 </RelativeLayout>
 
@@ -247,6 +269,7 @@
                         android:layout_marginRight="20dp"
                         android:hint="请选择日期"
                         android:textColor="#0F243F"
+                        android:textColorHint="#B9C0CA"
                         android:textSize="14sp"></TextView>
                 </RelativeLayout>
 
@@ -281,6 +304,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:background="@null"
+                    android:focusable="false"
                     android:gravity="top"
                     android:hint="请输入案件备注"
                     android:padding="20dp"

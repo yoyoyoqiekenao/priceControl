@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.cysd.pricecontrol.databinding.FragmentThreeBinding;
 import com.cysd.pricecontrol.databinding.FragmentTwoBinding;
+import com.gyf.immersionbar.ImmersionBar;
 
 public class ThreeFragment extends Fragment {
     private FragmentThreeBinding binding;
@@ -20,6 +21,7 @@ public class ThreeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentThreeBinding.inflate(inflater, container, false);
+        ImmersionBar.with(getActivity()).statusBarView(binding.view).statusBarDarkFont(true).init();
         return binding.getRoot();
     }
 
