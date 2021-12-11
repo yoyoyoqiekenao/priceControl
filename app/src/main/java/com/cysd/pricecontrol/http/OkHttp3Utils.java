@@ -176,60 +176,9 @@ public class OkHttp3Utils {
      */
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
-    private static final OkHttpClient client = new OkHttpClient();
 
-    public static void uploadImg(Context context, String url, List<String> mImgUrls) {
 
-       /* LoadingDialog.Builder loadBuilder = new LoadingDialog.Builder(context)
-                .setMessage("加载中...")
-                .setCancelable(true)
-                .setCancelOutside(true);
-        LoadingDialog dialog = loadBuilder.create();
-        dialog.show();*/
 
-        // mImgUrls为存放图片的url集合
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        for (int i = 0; i < mImgUrls.size(); i++) {
-            File f = new File(mImgUrls.get(i));
-            if (f != null) {
-                builder.addFormDataPart("img", f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
-            }
-        }
-
-        //添加其它信息
-//        builder.addFormDataPart("time",takePicTime);
-//        builder.addFormDataPart("mapX", SharedInfoUtils.getLongitude());
-//        builder.addFormDataPart("mapY",SharedInfoUtils.getLatitude());
-//        builder.addFormDataPart("name",SharedInfoUtils.getUserName());
-
-        MultipartBody requestBody = builder.build();
-        //构建请求
-        Request request = new Request.Builder()
-                //.url(Constant.BASE_URL)//地址
-                .url(url)//地址
-                .post(requestBody)//添加请求体
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                System.out.println("上传失败:e.getLocalizedMessage() = " + e.getLocalizedMessage());
-                ToastUtils.showLong("上传失败");
-                //dialog.dismiss();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                System.out.println("onResponse服务器返回===" + request.toString() + "/code==" + response.code());
-                if (response.code() == 500) {
-                    ToastUtils.showLong("服务器返回500");
-                }
-                System.out.println("上传照片成功：response = " + response.body().string());
-                ToastUtils.showLong("上传成功");
-                //dialog.dismiss();
-            }
-        });
-    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 

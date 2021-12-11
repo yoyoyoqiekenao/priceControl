@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.cysd.pricecontrol.NormalPop;
 import com.cysd.pricecontrol.R;
+import com.cysd.pricecontrol.SelectTimePop;
+import com.cysd.pricecontrol.SelectTypePop;
 import com.cysd.pricecontrol.databinding.FragmentOneBinding;
 import com.gyf.immersionbar.ImmersionBar;
 
@@ -24,12 +26,20 @@ public class OneFragment extends Fragment implements View.OnClickListener {
 
     private FragmentOneBinding binding;
     private NormalPop mPop;
+    private SelectTypePop mPop_type;
+    private SelectTimePop mPop_time;
+
 
     private String mName;
     private String mNo;
     private String mUnit;
     private String mPerson;
     private String mMobile;
+    private String mType;
+
+    private String mStart_year, mStart_month, mStart_day;
+    private String mEnd_year, mEnd_month, mEnd_day;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +50,8 @@ public class OneFragment extends Fragment implements View.OnClickListener {
         binding.rlNo.setOnClickListener(this);
         binding.rlPerson.setOnClickListener(this);
         binding.rlUnit.setOnClickListener(this);
+        binding.rlType.setOnClickListener(this);
+        binding.rlTime.setOnClickListener(this);
         return binding.getRoot();
     }
 
@@ -56,6 +68,12 @@ public class OneFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.rl_time:
+                showTimePop(mStart_year, mStart_month, mStart_day, mEnd_year, mEnd_month, mEnd_day);
+                break;
+            case R.id.rl_type:
+                showTypePop(mType);
+                break;
             case R.id.rl_mobile:
                 showPop(mMobile, "5");
                 break;
@@ -73,6 +91,45 @@ public class OneFragment extends Fragment implements View.OnClickListener {
                 break;
             default:
         }
+    }
+
+    //选择时间
+    private void showTimePop(String startYear, String startMonth, String startDay,
+                             String endYear, String endMonth, String endDay) {
+        mPop_time = new SelectTimePop(getContext(), startYear, startMonth, startDay,
+                endYear, endMonth, endDay, new SelectTimePop.onClick() {
+            @Override
+            public void click(String startYear, String startMonth, String startDay, String endYear, String endMonth, String endDay) {
+                mStart_year = startYear;
+                mStart_month = startMonth;
+                mStart_day = startDay;
+                mEnd_year = endYear;
+                mEnd_month = endMonth;
+                mEnd_day = endDay;
+                mPop_time.dismiss();
+
+                binding.tvTime.setText(mStart_year + "." + mStart_month + "." + mStart_day + "-" +
+                        mEnd_year + "." + mEnd_month + "." + mEnd_day);
+            }
+        });
+
+        mPop_time.setOutSideDismiss(true);
+        mPop_time.setPopupGravity(Gravity.BOTTOM);
+        mPop_time.showPopupWindow();
+    }
+
+    private void showTypePop(String content) {
+        mPop_type = new SelectTypePop(getContext(), content, new SelectTypePop.onClick() {
+            @Override
+            public void click(String content) {
+                mType = content;
+                binding.tvType.setText(mType);
+                mPop_type.dismiss();
+            }
+        });
+        mPop_type.setOutSideDismiss(true);
+        mPop_type.setPopupGravity(Gravity.BOTTOM);
+        mPop_type.showPopupWindow();
     }
 
     private void showPop(String content, String type) {
