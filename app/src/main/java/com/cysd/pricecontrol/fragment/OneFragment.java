@@ -198,6 +198,32 @@ public class OneFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void getRetCodeString(String retCode, String result) {
                             if ("200".equals(retCode)) {
+                                mName = "";
+                                mNo = "";
+                                mUnit = "";
+                                mPerson = "";
+                                mMobile = "";
+                                mType = "";
+                                mStart_year = "";
+                                mStart_month = "";
+                                mStart_day = "";
+                                mEnd_year = "";
+                                mEnd_month = "";
+                                mEnd_day = "";
+                                binding.edRemark.setText("");
+                                list.clear();
+                                mList.clear();
+
+                                binding.tvName.setText(mName);
+                                binding.tvNo.setText(mNo);
+                                binding.tvUnit.setText(mUnit);
+                                binding.tvPerson.setText(mPerson);
+                                binding.tvMobile.setText(mMobile);
+                                binding.tvType.setText(mType);
+                                binding.tvTime.setText("");
+                                mAdapter.setList(mList);
+
+
                                 ToastUtils.showShort("录入成功,请到物品页查看");
                             }
                         }

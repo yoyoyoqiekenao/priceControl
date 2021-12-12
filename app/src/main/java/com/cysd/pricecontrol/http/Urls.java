@@ -9,4 +9,6 @@ public class Urls {
     public static String upload = address_url + "/index/upload";
     //保存
     public static String save = address_url + "/index";
+    //物品列表
+    public static String thingList = address_url + "/index/list";
 }

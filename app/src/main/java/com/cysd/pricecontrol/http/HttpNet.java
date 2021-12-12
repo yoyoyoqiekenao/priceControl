@@ -1,6 +1,7 @@
 package com.cysd.pricecontrol.http;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.cysd.pricecontrol.util.ShowUtils;
 import com.google.gson.JsonElement;
@@ -13,6 +14,26 @@ import java.util.List;
 import okhttp3.Request;
 
 public class HttpNet {
+    //物品列表
+    public static void getThingList(Context context, String keyword, final NetListener netListener) {
+        String url = Urls.thingList;
+        HashMap<String, Object> params = new HashMap<>();
+        if (!TextUtils.isEmpty(keyword)) {
+            params.put("keyword", keyword);
+        }
+        OkHttp3Utils.postJsonRequest(url, params, new OkHttp3Utils.DataCallBack() {
+            @Override
+            public void requestSuccess(String result) throws Exception {
+                SuccessRequest(context, result, url, netListener);
+            }
+
+            @Override
+            public void requestFailure(Request request, IOException e) {
+                FailureRequest(context, request);
+            }
+        });
+    }
+
     //录入
     public static void save(Context context, String name, String number, String company,
                             String handover, String handover_mobile, String htype,
