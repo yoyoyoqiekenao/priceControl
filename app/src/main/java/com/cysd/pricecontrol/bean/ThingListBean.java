@@ -93,6 +93,16 @@ public class ThingListBean {
             @SerializedName("image_use")
             public String imageUse;
 
+            private String check;
+
+            public String getCheck() {
+                return check;
+            }
+
+            public void setCheck(String check) {
+                this.check = check;
+            }
+
             public String getId() {
                 return id;
             }

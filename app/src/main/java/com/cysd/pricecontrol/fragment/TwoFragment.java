@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.cysd.pricecontrol.DetailActivity;
+import com.cysd.pricecontrol.InputActivity;
 import com.cysd.pricecontrol.R;
 import com.cysd.pricecontrol.SearchActivity;
 import com.cysd.pricecontrol.adapter.TwoAdapter;
@@ -28,7 +29,7 @@ import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 
 
-public class TwoFragment extends Fragment {
+public class TwoFragment extends Fragment implements View.OnClickListener {
     private FragmentTwoBinding binding;
 
     private TwoAdapter mAdapter;
@@ -54,6 +55,7 @@ public class TwoFragment extends Fragment {
         });
 
         getThingsList("");
+        binding.ivInput.setOnClickListener(this);
         return binding.getRoot();
     }
 
@@ -82,11 +84,20 @@ public class TwoFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("xuwudi", "onDestory");
+
         if (binding != null) {
             binding = null;
         }
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_input:
+                startActivity(new Intent(getContext(), InputActivity.class));
+                break;
+            default:
+        }
+    }
 }
