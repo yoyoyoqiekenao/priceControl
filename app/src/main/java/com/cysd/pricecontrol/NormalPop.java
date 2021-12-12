@@ -1,6 +1,7 @@
 package com.cysd.pricecontrol;
 
 import android.content.Context;
+import android.text.method.DigitsKeyListener;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -47,6 +48,8 @@ public class NormalPop extends BasePopupWindow implements View.OnClickListener {
             case "2":
                 tv_type.setText("案件编号");
                 ed_content.setHint("请输入案件编号");
+                ed_content.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
+
                 break;
             case "3":
                 tv_type.setText("请输入承办单位");
@@ -59,6 +62,8 @@ public class NormalPop extends BasePopupWindow implements View.OnClickListener {
             case "5":
                 tv_type.setText("交接人联系方式");
                 ed_content.setHint("请输入交接人联系方式");
+                ed_content.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
+
                 break;
             default:
         }

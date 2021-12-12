@@ -32,6 +32,7 @@ import com.cysd.pricecontrol.DetailActivity;
 import com.cysd.pricecontrol.GlideCacheEngine;
 import com.cysd.pricecontrol.GlideEngine;
 import com.cysd.pricecontrol.NormalPop;
+import com.cysd.pricecontrol.NormalPop_2;
 import com.cysd.pricecontrol.R;
 import com.cysd.pricecontrol.SelectTimePop;
 import com.cysd.pricecontrol.SelectTypePop;
@@ -58,6 +59,8 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.SdkVersionUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,7 +85,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
     private SelectTimePop mPop_time;
     private SelectImgPop mPop_img;
     private ImageAdapter mAdapter;
-
+    private NormalPop_2 mPop2;
 
     private String mName;
     private String mNo;
@@ -165,7 +168,45 @@ public class OneFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_save:
-                save();
+                if (TextUtils.isEmpty(mName)) {
+                    ToastUtils.showShort("请填写案件名称");
+                    return;
+                }
+                if (TextUtils.isEmpty(mNo)) {
+                    ToastUtils.showShort("请填写案件编号");
+                    return;
+                }
+                if (TextUtils.isEmpty(mUnit)) {
+                    ToastUtils.showShort("请填写承办单位");
+                    return;
+                }
+                if (TextUtils.isEmpty(mPerson)) {
+                    ToastUtils.showShort("请填写交接人");
+                    return;
+                }
+                if (TextUtils.isEmpty(mMobile)) {
+                    ToastUtils.showShort("请填写交接人联系方式");
+                    return;
+                }
+                if (TextUtils.isEmpty(mType)) {
+                    ToastUtils.showShort("请选择交接人形式");
+                    return;
+                }
+                if (TextUtils.isEmpty(mStart_year)) {
+                    ToastUtils.showShort("请选择托管财务日期");
+                    return;
+                }
+                if (TextUtils.isEmpty(binding.edRemark.getText().toString().trim())) {
+                    ToastUtils.showShort("请填写备注");
+                    return;
+                }
+                if (list.size() < 1) {
+                    ToastUtils.showShort("请选择图片");
+                    return;
+                }
+
+                showSavePop();
+
                 break;
             case R.id.rl_time:
                 showTimePop(mStart_year, mStart_month, mStart_day, mEnd_year, mEnd_month, mEnd_day);
@@ -190,6 +231,19 @@ public class OneFragment extends Fragment implements View.OnClickListener {
                 break;
             default:
         }
+    }
+
+    private void showSavePop() {
+        mPop2 = new NormalPop_2(getContext(), "是否确定提交该入库信息", new NormalPop_2.OnClick() {
+            @Override
+            public void click() {
+                mPop2.dismiss();
+                save();
+            }
+        });
+        mPop2.setOutSideDismiss(true);
+        mPop2.setPopupGravity(Gravity.CENTER);
+        mPop2.showPopupWindow();
     }
 
     private void save() {
@@ -224,7 +278,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
                                 binding.tvTime.setText("");
                                 mAdapter.setList(mList);
 
-
+                                EventBus.getDefault().post("refresh");
                                 ToastUtils.showShort("录入成功,请到物品页查看");
                             }
                         }
@@ -330,7 +384,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
         PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofImage())
                 .imageEngine(GlideEngine.createGlideEngine())
-                .maxSelectNum(9 - mList.size())
+                .maxSelectNum(10 - mList.size())
                 .compress(true)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
     }
@@ -343,9 +397,9 @@ public class OneFragment extends Fragment implements View.OnClickListener {
             List<LocalMedia> selectListRequest = PictureSelector.obtainMultipleResult(data);
 
             for (int i = 0; i < selectListRequest.size(); i++) {
-                mList.add(new ImageBean(selectListRequest.get(i).getCompressPath(), ""));
+                mList.add(0, new ImageBean(selectListRequest.get(i).getCompressPath(), ""));
             }
-            Log.d("xuwudi", "数据===" + mList.toString());
+
             uploadImg(mList);
         }
 
@@ -383,8 +437,8 @@ public class OneFragment extends Fragment implements View.OnClickListener {
 
 
         }
-        if (imgList.size() < 9) {
-            imgList.add(new ImageBean("", "add"));
+        if (imgList.size() == 10) {
+            imgList.remove(9);
         }
         mAdapter.setList(imgList);
 

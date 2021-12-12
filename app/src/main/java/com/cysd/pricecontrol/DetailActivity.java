@@ -27,10 +27,13 @@ import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
 import com.cysd.pricecontrol.util.SharedPreferenceUtils;
 import com.google.gson.Gson;
+import com.gyf.immersionbar.ImmersionBar;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,7 +78,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         binding = ActivityDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
         mId = getIntent().getStringExtra("id");
 
 
@@ -95,6 +98,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         binding.rlType.setOnClickListener(this);
         binding.rlTime.setOnClickListener(this);
         binding.tvSave.setOnClickListener(this);
+        binding.ivBack.setOnClickListener(this);
 
         getDetail();
     }
@@ -179,7 +183,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofImage())
                 .imageEngine(GlideEngine.createGlideEngine())
-                .maxSelectNum(9 - mList.size())
+                .maxSelectNum(10 - mList.size())
                 .compress(true)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
     }
@@ -195,6 +199,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
             case R.id.tv_save:
                 update();
                 break;
@@ -232,6 +239,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void getRetCodeString(String retCode, String result) {
                         if ("200".equals(retCode)) {
+                            EventBus.getDefault().post("refresh");
                             finish();
                         }
                     }
@@ -369,7 +377,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
 
         }
-
+        if (imgList.size() == 10) {
+            imgList.remove(9);
+        }
         mAdapter.setList(imgList);
 
     }

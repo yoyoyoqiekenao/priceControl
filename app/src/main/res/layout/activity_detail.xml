@@ -11,14 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"></View>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:text="入库"
-        android:textColor="#6956EA"
-        android:textSize="16sp"></TextView>
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/iv_back"></ImageView>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="案件详情"
+            android:textColor="#6956EA"
+            android:textSize="16sp"></TextView>
+
+    </RelativeLayout>
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.cysd.pricecontrol;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -7,11 +8,14 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.cysd.pricecontrol.adapter.TwoAdapter;
 import com.cysd.pricecontrol.bean.ThingListBean;
 import com.cysd.pricecontrol.databinding.ActivitySearchBinding;
@@ -53,7 +57,12 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-
+        binding.ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     //获取物品列表
@@ -67,11 +76,21 @@ public class SearchActivity extends AppCompatActivity {
                         binding.rc.setVisibility(View.VISIBLE);
                         binding.llEmpty.setVisibility(View.GONE);
                         mAdapter.setList(bean.getData().getList());
+                        mAdapter.setImgUrl(bean.getData().getImageUrl());
                     } else {
                         binding.rc.setVisibility(View.GONE);
                         binding.llEmpty.setVisibility(View.VISIBLE);
                     }
 
+                    mAdapter.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                            Intent intent = new Intent(SearchActivity.this, DetailActivity.class);
+                            intent.putExtra("id", bean.getData().getList().get(position).getId());
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
                 }
             }
         });

@@ -28,6 +28,10 @@ import com.cysd.pricecontrol.http.NetListener;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 
 public class TwoFragment extends Fragment implements View.OnClickListener {
     private FragmentTwoBinding binding;
@@ -40,7 +44,7 @@ public class TwoFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentTwoBinding.inflate(inflater, container, false);
         ImmersionBar.with(getActivity()).statusBarView(binding.view).statusBarDarkFont(true).init();
-
+        EventBus.getDefault().register(this);
         mAdapter = new TwoAdapter();
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setOrientation(RecyclerView.VERTICAL);
@@ -76,9 +80,23 @@ public class TwoFragment extends Fragment implements View.OnClickListener {
                             startActivity(intent);
                         }
                     });
+                    if (bean.getData().getList() != null && bean.getData().getList().size() > 0) {
+                        binding.llEmpty.setVisibility(View.GONE);
+                        binding.rc.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.llEmpty.setVisibility(View.VISIBLE);
+                        binding.rc.setVisibility(View.GONE);
+                    }
                 }
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refresh(String str) {
+        if ("refresh".equals(str)) {
+            getThingsList("");
+        }
     }
 
     @Override
@@ -88,6 +106,7 @@ public class TwoFragment extends Fragment implements View.OnClickListener {
         if (binding != null) {
             binding = null;
         }
+        EventBus.getDefault().unregister(getContext());
     }
 
 

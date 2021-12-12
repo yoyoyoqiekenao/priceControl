@@ -18,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.cysd.pricecontrol.databinding.ActivityMainBinding;
 import com.cysd.pricecontrol.entity.TabEntity;
+import com.cysd.pricecontrol.fragment.FourFragment;
 import com.cysd.pricecontrol.fragment.OneFragment;
 import com.cysd.pricecontrol.fragment.ThreeFragment;
 import com.cysd.pricecontrol.fragment.TwoFragment;
@@ -53,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
         mFragments.add(new OneFragment());
         mFragments.add(new TwoFragment());
         mFragments.add(new ThreeFragment());
-        mFragments.add(new ThreeFragment());
+        mFragments.add(new FourFragment());
 
-
+        binding.viewPage.setOffscreenPageLimit(4);
         binding.viewPage.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
 
         //tab填充数据

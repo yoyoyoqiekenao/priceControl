@@ -20,6 +20,7 @@ import com.cysd.pricecontrol.bean.ThingListBean;
 import com.cysd.pricecontrol.databinding.ActivityInputBinding;
 import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
+import com.cysd.pricecontrol.util.ToastUtils;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 
@@ -52,6 +53,7 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
 
         binding.tvAllSave.setOnClickListener(this);
         binding.tvInput.setOnClickListener(this);
+        binding.ivBack.setOnClickListener(this);
     }
 
     //获取物品列表
@@ -84,7 +86,20 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
             case R.id.tv_input:
+                boolean isPut = false;
+                for (int i = 0; i < mList.size(); i++) {
+                    if (!TextUtils.isEmpty(mList.get(i).getCheck())) {
+                        isPut = true;
+                    }
+                }
+                if (isPut == false) {
+                    ToastUtils.showShort("请先选择需要倒入的案件");
+                    return;
+                }
                 mPop = new NormalPop_2(this, "确定导入涉案财物管理系统吗", new NormalPop_2.OnClick() {
                     @Override
                     public void click() {
