@@ -14,6 +14,56 @@ import java.util.List;
 import okhttp3.Request;
 
 public class HttpNet {
+    //修改
+    public static void updateThingDetail(Context context, String id, String name, String number, String company,
+                                         String handover, String handover_mobile, String htype,
+                                         String escrow_start, String escrow_end, String remark,
+                                         List<String> image, final NetListener netListener) {
+        String url = Urls.update;
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("name", name);
+        params.put("number", number);
+        params.put("company", company);
+        params.put("handover", handover);
+        params.put("handover_mobile", handover_mobile);
+        params.put("htype", htype);
+        params.put("escrow_start", escrow_start);
+        params.put("escrow_end", escrow_end);
+        params.put("remark", remark);
+        params.put("image", image);
+
+        OkHttp3Utils.postJsonRequest(url, params, new OkHttp3Utils.DataCallBack() {
+            @Override
+            public void requestSuccess(String result) throws Exception {
+                SuccessRequest(context, result, url, netListener);
+            }
+
+            @Override
+            public void requestFailure(Request request, IOException e) {
+                FailureRequest(context, request);
+            }
+        });
+    }
+
+    //物品详情
+    public static void getThingDetail(Context context, String id, final NetListener netListener) {
+        String url = Urls.detail;
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        OkHttp3Utils.postJsonRequest(url, params, new OkHttp3Utils.DataCallBack() {
+            @Override
+            public void requestSuccess(String result) throws Exception {
+                SuccessRequest(context, result, url, netListener);
+            }
+
+            @Override
+            public void requestFailure(Request request, IOException e) {
+                FailureRequest(context, request);
+            }
+        });
+    }
+
     //物品列表
     public static void getThingList(Context context, String keyword, final NetListener netListener) {
         String url = Urls.thingList;

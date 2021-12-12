@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.cysd.pricecontrol.DetailActivity;
 import com.cysd.pricecontrol.GlideCacheEngine;
 import com.cysd.pricecontrol.GlideEngine;
 import com.cysd.pricecontrol.NormalPop;
@@ -338,18 +339,9 @@ public class OneFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-           /* switch (requestCode) {
-                case PictureConfig.REQUEST_CAMERA:
-                    List<LocalMedia> result = PictureSelector.obtainMultipleResult(data);
 
-                    break;
-                case PictureConfig.CHOOSE_REQUEST:
-                    List<LocalMedia> result2 = PictureSelector.obtainMultipleResult(data);
-
-                    break;
-                default:*/
             List<LocalMedia> selectListRequest = PictureSelector.obtainMultipleResult(data);
-            mList.clear();
+
             for (int i = 0; i < selectListRequest.size(); i++) {
                 mList.add(new ImageBean(selectListRequest.get(i).getCompressPath(), ""));
             }

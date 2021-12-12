@@ -13,6 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.cysd.pricecontrol.DetailActivity;
 import com.cysd.pricecontrol.R;
 import com.cysd.pricecontrol.SearchActivity;
 import com.cysd.pricecontrol.adapter.TwoAdapter;
@@ -23,8 +26,6 @@ import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
-
-
 
 
 public class TwoFragment extends Fragment {
@@ -64,6 +65,15 @@ public class TwoFragment extends Fragment {
                 if ("200".equals(retCode)) {
                     ThingListBean bean = new Gson().fromJson(result, ThingListBean.class);
                     mAdapter.setList(bean.getData().getList());
+                    mAdapter.setImgUrl(bean.getData().getImageUrl());
+                    mAdapter.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                            Intent intent = new Intent(getContext(), DetailActivity.class);
+                            intent.putExtra("id", bean.getData().getList().get(position).getId());
+                            startActivity(intent);
+                        }
+                    });
                 }
             }
         });

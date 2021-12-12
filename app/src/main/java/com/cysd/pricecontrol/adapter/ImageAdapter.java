@@ -16,6 +16,7 @@ public class ImageAdapter extends BaseQuickAdapter<ImageBean, BaseViewHolder> {
         super(R.layout.item_image);
     }
 
+
     @Override
     protected void convert(BaseViewHolder baseViewHolder, ImageBean imageBean) {
         RequestOptions options = new RequestOptions()

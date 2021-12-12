@@ -27,7 +27,8 @@
         <ImageView
             android:id="@+id/iv"
             android:layout_width="65dp"
-            android:layout_height="65dp"></ImageView>
+            android:layout_height="65dp"
+            android:scaleType="fitXY"></ImageView>
 
         <LinearLayout
             android:layout_width="wrap_content"

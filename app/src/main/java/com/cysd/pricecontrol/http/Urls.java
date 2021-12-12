@@ -11,4 +11,8 @@ public class Urls {
     public static String save = address_url + "/index";
     //物品列表
     public static String thingList = address_url + "/index/list";
+    //物品详情
+    public static String detail = address_url + "/index/info";
+    //修改物品详情
+    public static String update = address_url + "/index/update";
 }

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ThingListBean {
+public class DetailBean {
 
     @SerializedName("code")
     public Integer code;
@@ -38,17 +38,17 @@ public class ThingListBean {
     }
 
     public static class DataDTO {
-        @SerializedName("list")
-        public List<ListDTO> list;
+        @SerializedName("info")
+        public InfoDTO info;
         @SerializedName("image_url")
         public String imageUrl;
 
-        public List<ListDTO> getList() {
-            return list;
+        public InfoDTO getInfo() {
+            return info;
         }
 
-        public void setList(List<ListDTO> list) {
-            this.list = list;
+        public void setInfo(InfoDTO info) {
+            this.info = info;
         }
 
         public String getImageUrl() {
@@ -59,7 +59,7 @@ public class ThingListBean {
             this.imageUrl = imageUrl;
         }
 
-        public static class ListDTO {
+        public static class InfoDTO {
             @SerializedName("id")
             public String id;
             @SerializedName("user_id")
@@ -83,15 +83,11 @@ public class ThingListBean {
             @SerializedName("remark")
             public String remark;
             @SerializedName("image")
-            public String image;
+            public List<String> image;
             @SerializedName("created_at")
             public String createdAt;
             @SerializedName("updated_at")
             public String updatedAt;
-            @SerializedName("add_date")
-            public String addDate;
-            @SerializedName("image_use")
-            public String imageUse;
 
             public String getId() {
                 return id;
@@ -181,11 +177,11 @@ public class ThingListBean {
                 this.remark = remark;
             }
 
-            public String getImage() {
+            public List<String> getImage() {
                 return image;
             }
 
-            public void setImage(String image) {
+            public void setImage(List<String> image) {
                 this.image = image;
             }
 
@@ -203,22 +199,6 @@ public class ThingListBean {
 
             public void setUpdatedAt(String updatedAt) {
                 this.updatedAt = updatedAt;
-            }
-
-            public String getAddDate() {
-                return addDate;
-            }
-
-            public void setAddDate(String addDate) {
-                this.addDate = addDate;
-            }
-
-            public String getImageUse() {
-                return imageUse;
-            }
-
-            public void setImageUse(String imageUse) {
-                this.imageUse = imageUse;
             }
         }
     }

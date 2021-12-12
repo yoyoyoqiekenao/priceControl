@@ -18,6 +18,12 @@ public class TwoAdapter extends BaseQuickAdapter<ThingListBean.DataDTO.ListDTO, 
         super(R.layout.item_two);
     }
 
+    private String imgUrl;
+
+    public void setImgUrl(String url) {
+        imgUrl = url;
+        notifyDataSetChanged();
+    }
 
     @Override
     protected void convert(@NonNull BaseViewHolder baseViewHolder, ThingListBean.DataDTO.ListDTO listDTO) {
@@ -25,7 +31,7 @@ public class TwoAdapter extends BaseQuickAdapter<ThingListBean.DataDTO.ListDTO, 
         RequestOptions options = new RequestOptions()
                 .error(R.mipmap.iv_img_add)
                 .transforms(new RoundedCorners(DensityUtil.dip2px(getContext(), 4)));
-        Glide.with(getContext()).load(listDTO.getImageUse()).apply(options)
+        Glide.with(getContext()).load(imgUrl + listDTO.getImageUse()).apply(options)
                 .into((ImageView) baseViewHolder.getView(R.id.iv));
         baseViewHolder.setText(R.id.tv_name, listDTO.getName() + "");
         baseViewHolder.setText(R.id.tv_person, "交接人:" + listDTO.getHandover() + "");
