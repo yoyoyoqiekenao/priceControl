@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.cysd.pricecontrol.adapter.ImageAdapter;
 import com.cysd.pricecontrol.adapter.SelectImgPop;
@@ -71,6 +72,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     private ImageAdapter mAdapter;
     private List<ImageBean> mList = new ArrayList<>();
+    private List<ImageBean> mList2 = new ArrayList<>();
     private List<String> list = new ArrayList<>();
 
     @Override
@@ -126,7 +128,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     mEnd_day = bean.getData().getInfo().getEscrowEnd().substring(8, 10);
 
                     binding.tvName.setText(bean.getData().getInfo().getName());
-                    binding.tvNo.setText("案件编号" + bean.getData().getInfo().getNumber());
+                    binding.tvNo.setText(bean.getData().getInfo().getNumber());
                     binding.tvUnit.setText(bean.getData().getInfo().getCompany() + "");
                     binding.tvPerson.setText(bean.getData().getInfo().getHandover() + "");
                     binding.tvMobile.setText(bean.getData().getInfo().getHandoverMobile() + "");
@@ -154,6 +156,15 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                             if ("add".equals(mList.get(position).getType())) {
                                 showImgPop();
                             }
+                        }
+                    });
+                    mAdapter.addChildClickViewIds(R.id.ll_delete);
+                    mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+                        @Override
+                        public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                            list.remove(position);
+                            mList.remove(position);
+                            mAdapter.removeAt(position);
                         }
                     });
                 }
@@ -337,12 +348,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         if (resultCode == RESULT_OK) {
 
             List<LocalMedia> selectListRequest = PictureSelector.obtainMultipleResult(data);
-
+            mList2.clear();
             for (int i = 0; i < selectListRequest.size(); i++) {
                 mList.add(0, new ImageBean(selectListRequest.get(i).getCompressPath(), ""));
+                mList2.add(0, new ImageBean(selectListRequest.get(i).getCompressPath(), ""));
+
             }
 
-            uploadImg(mList);
+            uploadImg(mList2);
         }
     }
 
@@ -377,10 +390,15 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
 
         }
-        if (imgList.size() == 10) {
-            imgList.remove(9);
+        if (mList.size() == 10) {
+            for (int i = mList.size() - 1; i >= 0; i--) {
+                if ("add".equals(mList.get(i).getType())) {
+                    mList.remove(i);
+                }
+            }
         }
-        mAdapter.setList(imgList);
+
+        mAdapter.setList(mList);
 
     }
 }

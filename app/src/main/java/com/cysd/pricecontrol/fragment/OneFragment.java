@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.cysd.pricecontrol.DetailActivity;
 import com.cysd.pricecontrol.GlideCacheEngine;
@@ -64,7 +65,10 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -98,6 +102,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
     private String mEnd_year, mEnd_month, mEnd_day;
 
     private List<ImageBean> mList = new ArrayList<>();
+    private List<ImageBean> mList2 = new ArrayList<>();
     private List<String> list = new ArrayList<>();
 
 
@@ -114,6 +119,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
         binding.rcImg.setAdapter(mAdapter);
         mList.add(new ImageBean("", "add"));
 
+
         mAdapter.setList(mList);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -121,6 +127,15 @@ public class OneFragment extends Fragment implements View.OnClickListener {
                 if ("add".equals(mList.get(position).getType())) {
                     showImgPop();
                 }
+            }
+        });
+        mAdapter.addChildClickViewIds(R.id.ll_delete);
+        mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                list.remove(position);
+                mList.remove(position);
+                mAdapter.removeAt(position);
             }
         });
 
@@ -247,6 +262,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
     }
 
     private void save() {
+
         if (list.size() > 0) {
             HttpNet.save(getContext(), mName, mNo, mUnit, mPerson, mMobile, mType, mStart_year + "." + mStart_month + "." + mStart_day,
                     mEnd_year + "." + mEnd_month + "." + mEnd_day, binding.edRemark.getText().toString().trim(), list, new NetListener() {
@@ -269,6 +285,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
                                 list.clear();
                                 mList.clear();
 
+
                                 binding.tvName.setText(mName);
                                 binding.tvNo.setText(mNo);
                                 binding.tvUnit.setText(mUnit);
@@ -276,6 +293,8 @@ public class OneFragment extends Fragment implements View.OnClickListener {
                                 binding.tvMobile.setText(mMobile);
                                 binding.tvType.setText(mType);
                                 binding.tvTime.setText("");
+                                mList.add(new ImageBean("", "add"));
+
                                 mAdapter.setList(mList);
 
                                 EventBus.getDefault().post("refresh");
@@ -396,18 +415,20 @@ public class OneFragment extends Fragment implements View.OnClickListener {
 
             List<LocalMedia> selectListRequest = PictureSelector.obtainMultipleResult(data);
 
+            mList2.clear();
             for (int i = 0; i < selectListRequest.size(); i++) {
                 mList.add(0, new ImageBean(selectListRequest.get(i).getCompressPath(), ""));
+                mList2.add(0, new ImageBean(selectListRequest.get(i).getCompressPath(), ""));
             }
 
-            uploadImg(mList);
+            uploadImg(mList2);
         }
 
     }
 
 
     private void uploadImg(List<ImageBean> imgList) {
-
+        list = removeDuplicateWithOrder(list);
         for (int i = 0; i < imgList.size(); i++) {
             OkHttpClient okHttpClient = new OkHttpClient();
             File file = new File(imgList.get(i).getImgUrl());
@@ -437,10 +458,28 @@ public class OneFragment extends Fragment implements View.OnClickListener {
 
 
         }
-        if (imgList.size() == 10) {
-            imgList.remove(9);
+        if (mList.size() == 10) {
+            for (int i = mList.size() - 1; i >= 0; i--) {
+                if ("add".equals(mList.get(i).getType())) {
+                    mList.remove(i);
+                }
+            }
         }
-        mAdapter.setList(imgList);
+
+        mAdapter.setList(mList);
 
     }
+
+    public static List<String> removeDuplicateWithOrder(List<String> list) {
+        List<String> listNew = new ArrayList<>();
+        Set set = new HashSet();
+        for (String str : list) {
+            if (set.add(str)) {
+                listNew.add(str);
+            }
+        }
+        return listNew;
+    }
+
+
 }

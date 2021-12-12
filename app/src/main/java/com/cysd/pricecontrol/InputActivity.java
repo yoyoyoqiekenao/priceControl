@@ -2,6 +2,8 @@ package com.cysd.pricecontrol;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -34,6 +36,19 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
 
     private List<ThingListBean.DataDTO.ListDTO> mList = new ArrayList<>();
     private NormalPop_2 mPop;
+    private SuccessPop mPop_success;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            switch (msg.what) {
+                case 1:
+                    mPop_success.dismiss();
+                    finish();
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,7 +119,7 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void click() {
                         mPop.dismiss();
-                        finish();
+                        showSuccessPop();
                     }
                 });
                 mPop.setOutSideDismiss(true);
@@ -119,5 +134,24 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
                 break;
             default:
         }
+    }
+
+    private void showSuccessPop() {
+        mPop_success = new SuccessPop(this, new SuccessPop.OnClick() {
+            @Override
+            public void click() {
+
+            }
+        });
+        mPop_success.setOutSideDismiss(true);
+        mPop_success.setPopupGravity(Gravity.CENTER);
+        mPop_success.showPopupWindow();
+        mHandler.sendEmptyMessageDelayed(1, 1000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

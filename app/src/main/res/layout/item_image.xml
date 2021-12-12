@@ -2,13 +2,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp">
+    android:layout_marginLeft="20dp"
+    android:layout_marginBottom="16dp">
 
     <ImageView
         android:id="@+id/iv"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginLeft="20dp"
         android:scaleType="fitXY"
         android:src="@mipmap/iv_img_add"></ImageView>
+
+    <LinearLayout
+        android:id="@+id/ll_delete"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iv"
+        android:layout_centerHorizontal="true"
+        android:background="#4D0F243F"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/iv_img_delete"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="删除图片"
+            android:textColor="#FFFFFF"
+            android:textSize="8sp"></TextView>
+    </LinearLayout>
 </RelativeLayout>

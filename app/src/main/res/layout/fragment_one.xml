@@ -330,14 +330,21 @@
                 android:textSize="14sp"
                 android:textStyle="bold"></TextView>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_img"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="21dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="21dp"
-                android:background="@drawable/bg_ffffff_20"></androidx.recyclerview.widget.RecyclerView>
+                android:background="@drawable/bg_ffffff_20">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rc_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"></androidx.recyclerview.widget.RecyclerView>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_save"
