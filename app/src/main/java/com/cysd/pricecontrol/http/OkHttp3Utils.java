@@ -83,6 +83,10 @@ public class OkHttp3Utils {
         getInstance().inner_postJsonAsync(url, params, callBack);
     }
 
+    //传图片使用
+    public static void formDataJsonRequest(String url, Map<String, String> params, DataCallBack callBack) {
+        getInstance().inner_formDataJsonAsync(url, params, callBack);
+    }
 
     //-------------对外提供的方法End--------------------------------
 
@@ -96,6 +100,70 @@ public class OkHttp3Utils {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    //传图片使用
+    private void inner_formDataJsonAsync(String url, Map<String, String> params, final DataCallBack callBack) {
+        final Request request = buildJsonFormDataRequest(url, params);
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("请求失败onFailure===" + request.toString() + "/n打印IOxception==" + e.getMessage());
+                deliverDataFailure(request, e, callBack);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                System.out.println("onResponse服务器返回===" + request.toString() + "/code==" + response.code());
+                if (response.code() == 500) {
+                    ToastUtils.showLong("服务器返回500");
+                }
+                if (response.isSuccessful()) { // 请求成功
+                    //执行请求成功的操作
+                    String result = response.body().string();
+                    deliverDataSuccess(result, callBack);
+                } else {
+                    if (response.code() == 404) ToastUtils.showLong("接口地址不存在");
+                    throw new IOException(response + "");
+                }
+            }
+        });
+    }
+
+    //传图片使用
+    private Request buildJsonFormDataRequest(String url, Map<String, String> params) {
+
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        for (Map.Entry<String, String> map : params.entrySet()) {
+            String key = map.getKey();
+            String value;
+            /**
+             * 判断值是否是空的
+             */
+            if (map.getValue() == null) {
+                value = "";
+            } else {
+                value = map.getValue();
+            }
+            File file = new File(value);
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), file);
+            builder.addFormDataPart("name", file.getName(), fileBody);
+        }
+        MultipartBody requestBody = builder.build();
+        Logger.d("请求接口url地址为：" + url + "\tpost请求（FormData）\n\n传输过去的 Map<String, String> params 的内容为：\n" + params);
+
+
+        //请求头参数
+        Request request;
+        if (!TextUtils.isEmpty(SharedPreferenceUtils.getLoginSp(MyApplication.getInstance()))) {
+            Log.d("xuwudi", "token===存在" + SharedPreferenceUtils.getLoginSp(MyApplication.getInstance()));
+            request = new Request.Builder().url(url).post(requestBody).addHeader("token", SharedPreferenceUtils.getLoginSp(MyApplication.getInstance())).build();
+        } else {
+            Log.d("xuwudi", "token===不存在");
+            request = new Request.Builder().url(url).post(requestBody).build();
+        }
+        Log.d("xuwudi", "request==" + request.toString());
+        return request;
+
+    }
 
     /**
      * post请求传json
@@ -149,13 +217,13 @@ public class OkHttp3Utils {
         Logger.d("请求接口url地址为：" + url + "\tpost请求(json)\n\n传输过去的json的内容为：\n" + json);
         Request request;
         if (!TextUtils.isEmpty(SharedPreferenceUtils.getLoginSp(MyApplication.getInstance()))) {
-            Log.d("xuwudi", "token===存在");
+            Log.d("xuwudi", "token===存在" + SharedPreferenceUtils.getLoginSp(MyApplication.getInstance()));
             request = new Request.Builder().url(url).post(requestBody).addHeader("token", SharedPreferenceUtils.getLoginSp(MyApplication.getInstance())).build();
         } else {
             Log.d("xuwudi", "token===不存在");
             request = new Request.Builder().url(url).post(requestBody).build();
         }
-        Log.d("xuwudi","request=="+request.toString());
+        Log.d("xuwudi", "request==" + request.toString());
         return request;
         //return new Request.Builder().url(url).post(requestBody).build();
     }

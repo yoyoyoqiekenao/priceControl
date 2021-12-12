@@ -13,12 +13,44 @@ import java.util.List;
 import okhttp3.Request;
 
 public class HttpNet {
-    //上传图片
-    public static void uploadImg(Context context, List<String> list, final NetListener netListener) {
-        String url = Urls.upload;
+    //录入
+    public static void save(Context context, String name, String number, String company,
+                            String handover, String handover_mobile, String htype,
+                            String escrow_start, String escrow_end, String remark,
+                            List<String> image, final NetListener netListener) {
+        String url = Urls.save;
         HashMap<String, Object> params = new HashMap<>();
-        params.put("file", list);
+        params.put("name", name);
+        params.put("number", number);
+        params.put("company", company);
+        params.put("handover", handover);
+        params.put("handover_mobile", handover_mobile);
+        params.put("htype", htype);
+        params.put("escrow_start", escrow_start);
+        params.put("escrow_end", escrow_end);
+        params.put("remark", remark);
+        params.put("image", image);
         OkHttp3Utils.postJsonRequest(url, params, new OkHttp3Utils.DataCallBack() {
+            @Override
+            public void requestSuccess(String result) throws Exception {
+                SuccessRequest(context, result, url, netListener);
+            }
+
+            @Override
+            public void requestFailure(Request request, IOException e) {
+                FailureRequest(context, request);
+            }
+        });
+    }
+
+    //上传图片
+    public static void uploadImg(Context context, String str, final NetListener netListener) {
+        String url = Urls.upload;
+        HashMap<String, String> params = new HashMap<>();
+        params.put("file", str);
+
+
+        OkHttp3Utils.formDataJsonRequest(url, params, new OkHttp3Utils.DataCallBack() {
             @Override
             public void requestSuccess(String result) throws Exception {
                 SuccessRequest(context, result, url, netListener);

@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.hardware.input.InputManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,12 +37,16 @@ import com.cysd.pricecontrol.SelectTypePop;
 import com.cysd.pricecontrol.adapter.ImageAdapter;
 import com.cysd.pricecontrol.adapter.SelectImgPop;
 import com.cysd.pricecontrol.bean.ImageBean;
+import com.cysd.pricecontrol.bean.ImageUpLoadBean;
 import com.cysd.pricecontrol.databinding.FragmentOneBinding;
 import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
+import com.cysd.pricecontrol.util.SharedPreferenceUtils;
+import com.cysd.pricecontrol.util.ToastUtils;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
@@ -52,8 +57,19 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.SdkVersionUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -78,6 +94,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
     private String mEnd_year, mEnd_month, mEnd_day;
 
     private List<ImageBean> mList = new ArrayList<>();
+    private List<String> list = new ArrayList<>();
 
 
     @Override
@@ -111,6 +128,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
         binding.rlUnit.setOnClickListener(this);
         binding.rlType.setOnClickListener(this);
         binding.rlTime.setOnClickListener(this);
+        binding.tvSave.setOnClickListener(this);
         return binding.getRoot();
     }
 
@@ -145,6 +163,9 @@ public class OneFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_save:
+                save();
+                break;
             case R.id.rl_time:
                 showTimePop(mStart_year, mStart_month, mStart_day, mEnd_year, mEnd_month, mEnd_day);
                 break;
@@ -168,6 +189,21 @@ public class OneFragment extends Fragment implements View.OnClickListener {
                 break;
             default:
         }
+    }
+
+    private void save() {
+        if (list.size() > 0) {
+            HttpNet.save(getContext(), mName, mNo, mUnit, mPerson, mMobile, mType, mStart_year + "." + mStart_month + "." + mStart_day,
+                    mEnd_year + "." + mEnd_month + "." + mEnd_day, binding.edRemark.getText().toString().trim(), list, new NetListener() {
+                        @Override
+                        public void getRetCodeString(String retCode, String result) {
+                            if ("200".equals(retCode)) {
+                                ToastUtils.showShort("录入成功,请到物品页查看");
+                            }
+                        }
+                    });
+        }
+
     }
 
     //选择时间
@@ -259,6 +295,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
         PictureSelector.create(this)
                 .openCamera(PictureMimeType.ofImage())
                 .imageEngine(GlideEngine.createGlideEngine())
+                .compress(true)
                 .forResult(PictureConfig.REQUEST_CAMERA);
     }
 
@@ -266,6 +303,8 @@ public class OneFragment extends Fragment implements View.OnClickListener {
         PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofImage())
                 .imageEngine(GlideEngine.createGlideEngine())
+                .maxSelectNum(9 - mList.size())
+                .compress(true)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
     }
 
@@ -286,7 +325,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
             List<LocalMedia> selectListRequest = PictureSelector.obtainMultipleResult(data);
             mList.clear();
             for (int i = 0; i < selectListRequest.size(); i++) {
-                mList.add(new ImageBean(selectListRequest.get(i).getRealPath(), ""));
+                mList.add(new ImageBean(selectListRequest.get(i).getCompressPath(), ""));
             }
             Log.d("xuwudi", "数据===" + mList.toString());
             uploadImg(mList);
@@ -296,15 +335,40 @@ public class OneFragment extends Fragment implements View.OnClickListener {
 
 
     private void uploadImg(List<ImageBean> imgList) {
-        List<String> mList = new ArrayList<>();
-        for (int i = 0; i < imgList.size(); i++) {
-            mList.add(imgList.get(i).getImgUrl());
-        }
-        HttpNet.uploadImg(getContext(), mList, new NetListener() {
-            @Override
-            public void getRetCodeString(String retCode, String result) {
 
-            }
-        });
+        for (int i = 0; i < imgList.size(); i++) {
+            OkHttpClient okHttpClient = new OkHttpClient();
+            File file = new File(imgList.get(i).getImgUrl());
+            RequestBody image = RequestBody.create(MediaType.parse("image/jpeg"), file);
+            RequestBody requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("file", imgList.get(i).getImgUrl(), image)
+                    .build();
+            Request request = new Request.Builder()
+                    .url("http://139.196.162.235/index.php/api/index/upload")
+                    .addHeader("token", SharedPreferenceUtils.getLoginSp(getContext()))
+                    .post(requestBody)
+                    .build();
+            okHttpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    Gson gson = new Gson();
+                    ImageUpLoadBean bean = gson.fromJson(response.body().string(), ImageUpLoadBean.class);
+                    list.add(bean.getData().getUrl());
+                }
+            });
+
+
+        }
+        if (imgList.size() < 9) {
+            imgList.add(new ImageBean("", "add"));
+        }
+        mAdapter.setList(imgList);
+
     }
 }

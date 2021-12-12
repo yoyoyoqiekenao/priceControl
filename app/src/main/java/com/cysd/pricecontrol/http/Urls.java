@@ -6,5 +6,7 @@ public class Urls {
     //登陆
     public static String login = address_url + "/index/login";
     //上传图片
-    public static String upload = address_url + "/index/upload2";
+    public static String upload = address_url + "/index/upload";
+    //保存
+    public static String save = address_url + "/index";
 }
