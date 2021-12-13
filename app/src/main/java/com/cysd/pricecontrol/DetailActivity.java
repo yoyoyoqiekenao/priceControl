@@ -27,6 +27,7 @@ import com.cysd.pricecontrol.databinding.ActivityDetailBinding;
 import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
 import com.cysd.pricecontrol.util.SharedPreferenceUtils;
+import com.cysd.pricecontrol.util.ToastUtils;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.luck.picture.lib.PictureSelector;
@@ -155,6 +156,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                         public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                             if ("add".equals(mList.get(position).getType())) {
                                 showImgPop();
+                            } else {
+                                Intent intent = new Intent(DetailActivity.this, ImageActivity.class);
+                                intent.putExtra("img", mList.get(position).getImgUrl());
+                                startActivity(intent);
                             }
                         }
                     });
@@ -164,7 +169,16 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                         public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                             list.remove(position);
                             mList.remove(position);
-                            mAdapter.removeAt(position);
+                            boolean add = true;
+                            for (int i = 0; i < mList.size(); i++) {
+                                if ("add".equals(mList.get(i).getType())) {
+                                    add = false;
+                                }
+                            }
+                            if (add) {
+                                mList.add(new ImageBean("", "add"));
+                            }
+                            mAdapter.setList(mList);
                         }
                     });
                 }
@@ -250,6 +264,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void getRetCodeString(String retCode, String result) {
                         if ("200".equals(retCode)) {
+                            ToastUtils.showShort("修改成功");
                             EventBus.getDefault().post("refresh");
                             finish();
                         }
@@ -384,7 +399,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 public void onResponse(Call call, Response response) throws IOException {
                     Gson gson = new Gson();
                     ImageUpLoadBean bean = gson.fromJson(response.body().string(), ImageUpLoadBean.class);
-                    list.add(bean.getData().getUrl());
+                    list.add(0, bean.getData().getUrl());
                 }
             });
 

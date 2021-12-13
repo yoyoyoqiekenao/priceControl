@@ -1,10 +1,16 @@
 package com.cysd.pricecontrol;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.text.method.DigitsKeyListener;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.cysd.pricecontrol.util.ToastUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import razerdp.basepopup.BasePopupWindow;
 
@@ -21,7 +27,16 @@ public class NormalPop extends BasePopupWindow implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_submit:
-                mClick.click(ed_content.getText().toString().trim());
+                if ("5".equals(mType)) {
+                    if (isMobilPhone(ed_content.getText().toString().trim())) {
+                        mClick.click(ed_content.getText().toString().trim());
+                    } else {
+                        ToastUtils.showShort("手机号格式输入错误");
+                    }
+                } else {
+                    mClick.click(ed_content.getText().toString().trim());
+                }
+
                 break;
             case R.id.tv_cancel:
                 dismiss();
@@ -48,7 +63,7 @@ public class NormalPop extends BasePopupWindow implements View.OnClickListener {
             case "2":
                 tv_type.setText("案件编号");
                 ed_content.setHint("请输入案件编号");
-                ed_content.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
+                //ed_content.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
 
                 break;
             case "3":
@@ -81,5 +96,20 @@ public class NormalPop extends BasePopupWindow implements View.OnClickListener {
         tv_cancel.setOnClickListener(this);
         tv_submit.setOnClickListener(this);
         return view;
+    }
+
+    public static boolean isMobilPhone(String phone) {
+        if (TextUtils.isEmpty(phone)) {
+            return false;
+        }
+        String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}$";
+        if (phone.length() != 11) {
+            return false;
+        } else {
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(phone);
+            boolean isMatch = m.matches();
+            return isMatch;
+        }
     }
 }

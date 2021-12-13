@@ -133,9 +133,21 @@ public class OneFragment extends Fragment implements View.OnClickListener {
         mAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+
                 list.remove(position);
                 mList.remove(position);
-                mAdapter.removeAt(position);
+
+                boolean add = true;
+                for (int i = 0; i < mList.size(); i++) {
+                    if ("add".equals(mList.get(i).getType())) {
+                        add = false;
+                    }
+                }
+                if (add) {
+                    mList.add(new ImageBean("", "add"));
+                }
+
+                mAdapter.setList(mList);
             }
         });
 
@@ -452,7 +464,7 @@ public class OneFragment extends Fragment implements View.OnClickListener {
                 public void onResponse(Call call, Response response) throws IOException {
                     Gson gson = new Gson();
                     ImageUpLoadBean bean = gson.fromJson(response.body().string(), ImageUpLoadBean.class);
-                    list.add(bean.getData().getUrl());
+                    list.add(0, bean.getData().getUrl());
                 }
             });
 

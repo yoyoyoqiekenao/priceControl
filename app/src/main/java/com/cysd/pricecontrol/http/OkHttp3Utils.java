@@ -106,6 +106,7 @@ public class OkHttp3Utils {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                ToastUtils.showLong("请求失败1：" + e.getMessage());
                 System.out.println("请求失败onFailure===" + request.toString() + "/n打印IOxception==" + e.getMessage());
                 deliverDataFailure(request, e, callBack);
             }
@@ -180,6 +181,7 @@ public class OkHttp3Utils {
             @Override
             public void onFailure(Call call, IOException e) {
                 System.out.println("请求失败onFailure===" + request.toString() + "/n打印IOxception==" + e.getMessage());
+                ToastUtils.showLong("请求失败2：" + e.getMessage());
                 deliverDataFailure(request, e, callBack);
             }
 
@@ -188,6 +190,8 @@ public class OkHttp3Utils {
                 System.out.println("onResponse服务器返回===" + request.toString() + "/code==" + response.code());
                 if (response.code() == 500) {
                     ToastUtils.showLong("服务器返回500");
+                } else if (response.code() == 400) {
+                    ToastUtils.showLong("账号或密码错误");
                 }
 
                 if (response.isSuccessful()) { // 请求成功
@@ -245,7 +249,6 @@ public class OkHttp3Utils {
             public void run() {
                 if (callBack != null) {
                     callBack.requestFailure(request, e);
-
                     if (e instanceof HttpException) {     //   HTTP错误
                         onException(ExceptionReason.BAD_NETWORK);
                     } else if (e instanceof ConnectException

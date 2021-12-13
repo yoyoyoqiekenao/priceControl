@@ -3,6 +3,7 @@ package com.cysd.pricecontrol;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.cysd.pricecontrol.databinding.ActivityLoginBinding;
 import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
 import com.cysd.pricecontrol.util.SharedPreferenceUtils;
+import com.cysd.pricecontrol.util.ToastUtils;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 
@@ -40,6 +42,7 @@ public class LoginActivity extends Activity {
                 binding.edPwd.getText().toString().trim(), new NetListener() {
                     @Override
                     public void getRetCodeString(String retCode, String result) {
+                        Log.d("xuwudi", "code====" + retCode);
                         if ("200".equals(retCode)) {
                             LoginBean bean = new Gson().fromJson(result, LoginBean.class);
                             SharedPreferenceUtils.setLoginSp(LoginActivity.this, bean.getData().getToken());
@@ -47,7 +50,9 @@ public class LoginActivity extends Activity {
                             finish();
                         }
                     }
-                });
-    }
+
+
+    });
+}
 
 }

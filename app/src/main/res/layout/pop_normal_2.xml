@@ -35,16 +35,12 @@
             <TextView
                 android:id="@+id/tv_cancel"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_f5f7f9_30"
                 android:gravity="center"
-                android:paddingLeft="45dp"
-                android:paddingTop="10dp"
-                android:paddingRight="45dp"
-                android:paddingBottom="10dp"
                 android:text="取消"
                 android:textColor="#6956EA"
                 android:textSize="14sp"></TextView>
@@ -52,7 +48,7 @@
             <TextView
                 android:id="@+id/tv_submit"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
