@@ -26,6 +26,7 @@ import com.cysd.pricecontrol.bean.ImageUpLoadBean;
 import com.cysd.pricecontrol.databinding.ActivityDetailBinding;
 import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
+import com.cysd.pricecontrol.http.Urls;
 import com.cysd.pricecontrol.util.SharedPreferenceUtils;
 import com.cysd.pricecontrol.util.ToastUtils;
 import com.google.gson.Gson;
@@ -385,7 +386,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     .addFormDataPart("file", imgList.get(i).getImgUrl(), image)
                     .build();
             Request request = new Request.Builder()
-                    .url("http://139.196.162.235/index.php/api/index/upload")
+                    .url(Urls.upload)
                     .addHeader("token", SharedPreferenceUtils.getLoginSp(this))
                     .post(requestBody)
                     .build();

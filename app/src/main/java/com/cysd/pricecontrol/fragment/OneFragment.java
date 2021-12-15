@@ -44,6 +44,7 @@ import com.cysd.pricecontrol.bean.ImageUpLoadBean;
 import com.cysd.pricecontrol.databinding.FragmentOneBinding;
 import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
+import com.cysd.pricecontrol.http.Urls;
 import com.cysd.pricecontrol.util.SharedPreferenceUtils;
 import com.cysd.pricecontrol.util.ToastUtils;
 import com.google.android.flexbox.FlexDirection;
@@ -450,7 +451,8 @@ public class OneFragment extends Fragment implements View.OnClickListener {
                     .addFormDataPart("file", imgList.get(i).getImgUrl(), image)
                     .build();
             Request request = new Request.Builder()
-                    .url("http://139.196.162.235/index.php/api/index/upload")
+                    //.url("http://139.196.162.235/index.php/api/index/upload")
+                    .url(Urls.upload)
                     .addHeader("token", SharedPreferenceUtils.getLoginSp(getContext()))
                     .post(requestBody)
                     .build();

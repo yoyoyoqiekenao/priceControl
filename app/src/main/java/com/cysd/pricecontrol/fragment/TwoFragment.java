@@ -81,10 +81,8 @@ public class TwoFragment extends Fragment implements View.OnClickListener {
                         }
                     });
                     if (bean.getData().getList() != null && bean.getData().getList().size() > 0) {
-                        binding.llEmpty.setVisibility(View.GONE);
                         binding.rc.setVisibility(View.VISIBLE);
                     } else {
-                        binding.llEmpty.setVisibility(View.VISIBLE);
                         binding.rc.setVisibility(View.GONE);
                     }
                 }
