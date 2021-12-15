@@ -192,6 +192,8 @@ public class OkHttp3Utils {
                     ToastUtils.showLong("服务器返回500");
                 } else if (response.code() == 400) {
                     ToastUtils.showLong("账号或密码错误");
+                } else if (response.code() == 401) {
+
                 }
 
                 if (response.isSuccessful()) { // 请求成功
@@ -250,12 +252,12 @@ public class OkHttp3Utils {
                 if (callBack != null) {
                     callBack.requestFailure(request, e);
                     if (e instanceof HttpException) {     //   HTTP错误
-                        onException(ExceptionReason.BAD_NETWORK);
+                        onException(ExceptionReason.BAD_NETWORK, e.getMessage());
                     } else if (e instanceof ConnectException
                             || e instanceof UnknownHostException) {   //   连接错误
-                        onException(ExceptionReason.CONNECT_ERROR);
+                        onException(ExceptionReason.CONNECT_ERROR, e.getMessage());
                     } else if (e instanceof InterruptedIOException) {   //  连接超时
-                        onException(ExceptionReason.CONNECT_TIMEOUT);
+                        onException(ExceptionReason.CONNECT_TIMEOUT, e.getMessage());
                     }
 
                 }
@@ -280,20 +282,21 @@ public class OkHttp3Utils {
                     try {
                         callBack.requestSuccess(result);
                     } catch (Exception e) {
+                        ToastUtils.showShort("异常处理:" + e.getMessage());
                         e.printStackTrace();
                         if (e instanceof HttpException) {     //   HTTP错误
-                            onException(ExceptionReason.BAD_NETWORK);
+                            onException(ExceptionReason.BAD_NETWORK, e.getMessage());
                         } else if (e instanceof ConnectException
                                 || e instanceof UnknownHostException) {   //   连接错误
-                            onException(ExceptionReason.CONNECT_ERROR);
+                            onException(ExceptionReason.CONNECT_ERROR, e.getMessage());
                         } else if (e instanceof InterruptedIOException) {   //  连接超时
-                            onException(ExceptionReason.CONNECT_TIMEOUT);
+                            onException(ExceptionReason.CONNECT_TIMEOUT, e.getMessage());
                         } else if (e instanceof JsonParseException
                                 || e instanceof JSONException
                                 || e instanceof ParseException) {   //  解析错误
-                            onException(ExceptionReason.PARSE_ERROR);
+                            onException(ExceptionReason.PARSE_ERROR, e.getMessage());
                         } else {
-                            onException(ExceptionReason.UNKNOWN_ERROR);
+                            onException(ExceptionReason.UNKNOWN_ERROR, e.getMessage());
                         }
                         Logger.e("异常打印=" + e.getMessage().toString());
                     }
@@ -359,7 +362,7 @@ public class OkHttp3Utils {
      *
      * @param reason
      */
-    public void onException(ExceptionReason reason) {
+    public void onException(ExceptionReason reason, String err) {
         switch (reason) {
             case CONNECT_ERROR:
                 ToastUtils.showLong(R.string.connect_error, Toast.LENGTH_SHORT);
@@ -379,7 +382,7 @@ public class OkHttp3Utils {
 
             case UNKNOWN_ERROR:
             default:
-                ToastUtils.showLong(R.string.unknown_error, Toast.LENGTH_SHORT);
+                ToastUtils.showLong(R.string.unknown_error + ":" + err, Toast.LENGTH_SHORT);
                 break;
         }
     }

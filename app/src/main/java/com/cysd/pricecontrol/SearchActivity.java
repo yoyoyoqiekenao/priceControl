@@ -25,6 +25,7 @@ import com.cysd.pricecontrol.bean.ThingListBean;
 import com.cysd.pricecontrol.databinding.ActivitySearchBinding;
 import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
+import com.cysd.pricecontrol.util.ActivityManager;
 import com.cysd.pricecontrol.util.ToastUtils;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
@@ -59,6 +60,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ImmersionBar.with(this).statusBarDarkFont(true).init();
+        ActivityManager.addActivity(this);
 
         binding.tvInput.setOnClickListener(this);
         binding.tvAllSave.setOnClickListener(this);

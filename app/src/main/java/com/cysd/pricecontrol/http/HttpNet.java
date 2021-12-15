@@ -1,8 +1,12 @@
 package com.cysd.pricecontrol.http;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 
+import com.cysd.pricecontrol.LoginActivity;
+import com.cysd.pricecontrol.util.ActivityManager;
+import com.cysd.pricecontrol.util.SharedPreferenceUtils;
 import com.cysd.pricecontrol.util.ShowUtils;
 import com.cysd.pricecontrol.util.ToastUtils;
 import com.google.gson.JsonElement;
@@ -173,8 +177,11 @@ public class HttpNet {
         if (netListener != null) netListener.getRetCodeString(retCode, result);
 
 
-        if ("403".equals(retCode)) {
-            //reTryVerCode(context);
+        if ("401".equals(retCode)) {
+            SharedPreferenceUtils.deleteLoginSp(context);
+            ActivityManager.exit();
+            Intent intent = new Intent(context, LoginActivity.class);
+            context.startActivity(intent);
         }
 
 

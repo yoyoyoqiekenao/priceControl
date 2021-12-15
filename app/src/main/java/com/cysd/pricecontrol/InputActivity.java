@@ -22,6 +22,7 @@ import com.cysd.pricecontrol.bean.ThingListBean;
 import com.cysd.pricecontrol.databinding.ActivityInputBinding;
 import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
+import com.cysd.pricecontrol.util.ActivityManager;
 import com.cysd.pricecontrol.util.ToastUtils;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
@@ -56,6 +57,7 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
         binding = ActivityInputBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ImmersionBar.with(this).statusBarDarkFont(true).init();
+        ActivityManager.addActivity(this);
 
         mAdapter = new InputAdapter();
         LinearLayoutManager manager = new LinearLayoutManager(this);

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,8 @@ import com.cysd.pricecontrol.fragment.FourFragment;
 import com.cysd.pricecontrol.fragment.OneFragment;
 import com.cysd.pricecontrol.fragment.ThreeFragment;
 import com.cysd.pricecontrol.fragment.TwoFragment;
+import com.cysd.pricecontrol.util.ActivityManager;
+import com.cysd.pricecontrol.util.ToastUtils;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.hjq.permissions.OnPermissionCallback;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        ActivityManager.addActivity(this);
 
         mFragments.add(new OneFragment());
         mFragments.add(new TwoFragment());
@@ -147,5 +151,27 @@ public class MainActivity extends AppCompatActivity {
     protected int dp2px(float dp) {
         final float scale = getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onAppExit();
+            return true;
+        }
+        return false;
+    }
+
+    private long firstClick;
+
+    public void onAppExit() {
+        if (System.currentTimeMillis() - this.firstClick > 2000L) {
+            this.firstClick = System.currentTimeMillis();
+            ToastUtils.showShort("再按一次退出");
+            //Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ActivityManager.exit();
+        finish();
     }
 }

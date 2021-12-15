@@ -76,17 +76,7 @@ public class SharedPreferenceUtils {
         editor.commit();
     }
 
-    /**
-     * 对单个setInfo修改
-     *
-     * @param context
-     * @param setInfoStr
-     */
-    public static void setLoginSetInfoSp(Context context, String setInfoStr) {
-        SharedPreferences.Editor editor = context.getSharedPreferences("myLoginPreferences", context.MODE_PRIVATE).edit();
-        editor.putString("setInfo", setInfoStr);
-        editor.commit();
-    }
+
 
     /**
      * 获取登录状态信息
@@ -100,30 +90,7 @@ public class SharedPreferenceUtils {
         return token;
     }
 
-    /**
-     * 查询某个键是否存在
-     *
-     * @param context
-     */
-    public static boolean isLoginSp(Context context) {
-        boolean isLogin = false;
-        SharedPreferences myLoginPreferences = context.getSharedPreferences("myLoginPreferences", Context.MODE_PRIVATE);
-        //检查当前键是否存在
-        boolean isSetInfo = myLoginPreferences.contains("setInfo");
-        boolean isToken = myLoginPreferences.contains("authKey");
-        boolean isUserId = myLoginPreferences.contains("sessionId");
-        if (isToken && isUserId) {
-            String token = myLoginPreferences.getString("authKey", "");
-            String userId = myLoginPreferences.getString("sessionId", "");
-            if (!token.equals("") && !userId.equals("")) {
-                isLogin = true;
-            }
-        }
-        return isLogin;
 
-        //使用getAll可以返回所有可用的键值
-        //Map<String,?> allMaps = myLoginPreferences.getAll();
-    }
 
     /**
      * 清除所有登录保存的信息

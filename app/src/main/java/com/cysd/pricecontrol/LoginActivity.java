@@ -3,6 +3,7 @@ package com.cysd.pricecontrol;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -13,6 +14,7 @@ import com.cysd.pricecontrol.bean.LoginBean;
 import com.cysd.pricecontrol.databinding.ActivityLoginBinding;
 import com.cysd.pricecontrol.http.HttpNet;
 import com.cysd.pricecontrol.http.NetListener;
+import com.cysd.pricecontrol.util.ActivityManager;
 import com.cysd.pricecontrol.util.SharedPreferenceUtils;
 import com.cysd.pricecontrol.util.ToastUtils;
 import com.google.gson.Gson;
@@ -27,6 +29,7 @@ public class LoginActivity extends Activity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ImmersionBar.with(this).statusBarDarkFont(true).init();
+        ActivityManager.addActivity(this);
 
         binding.tvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +38,10 @@ public class LoginActivity extends Activity {
             }
         });
 
+        if (!TextUtils.isEmpty(SharedPreferenceUtils.getLoginSp(this))) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
     }
 
     private void Login() {
@@ -52,7 +59,7 @@ public class LoginActivity extends Activity {
                     }
 
 
-    });
-}
+                });
+    }
 
 }
