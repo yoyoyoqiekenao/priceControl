@@ -14,6 +14,8 @@ import com.cysd.pricecontrol.databinding.FragmentThreeBinding;
 import com.cysd.pricecontrol.databinding.FragmentTwoBinding;
 import com.gyf.immersionbar.ImmersionBar;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class ThreeFragment extends Fragment {
     private FragmentThreeBinding binding;
 
@@ -25,13 +27,15 @@ public class ThreeFragment extends Fragment {
         return binding.getRoot();
     }
 
+
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("xuwudi", "onDestory");
+    public void onDestroyView() {
+        super.onDestroyView();
         if (binding != null) {
             binding = null;
         }
-    }
 
+
+    }
 }

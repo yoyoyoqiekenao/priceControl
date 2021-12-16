@@ -183,10 +183,11 @@ public class OneFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
 
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
         if (binding != null) {
             binding = null;
         }

@@ -103,7 +103,9 @@ public class NormalPop extends BasePopupWindow implements View.OnClickListener {
             return false;
         }
         //String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}$";
-        String regex = "^1\\d{10}$";
+        //String regex = "^1\\d{10}$";
+        //String regex = "^0?(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$";
+        String regex = "^0?(13|14|15|16|17|18|19)[0-9]{8}$";
         if (phone.length() != 11) {
             return false;
         } else {

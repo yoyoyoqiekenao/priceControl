@@ -25,13 +25,12 @@ public class FourFragment extends Fragment {
         return binding.getRoot();
     }
 
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("xuwudi", "onDestory");
+    public void onDestroyView() {
+        super.onDestroyView();
         if (binding != null) {
             binding = null;
         }
     }
-
 }

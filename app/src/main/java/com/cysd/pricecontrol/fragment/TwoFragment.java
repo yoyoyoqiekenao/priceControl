@@ -97,16 +97,18 @@ public class TwoFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
         if (binding != null) {
             binding = null;
         }
-        EventBus.getDefault().unregister(getContext());
-    }
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
 
+    }
 
     @Override
     public void onClick(View v) {
